@@ -166,8 +166,6 @@ namespace TrafficSim.AI
                 // Check if we are entering an intersection.
                 if (nextNode.intersectionParent != null)
                 {
-                    // Log that we have an intersection.
-                    Debug.Log("Intersection detected!");
 
                     // Check if the intersection is active. and the next node is a crosswalk.
                     if (nextNode.intersectionParent.intersectionActive && nextNode.type == Pathfinding.RoadNode.NodeType.CROSSWALK)
