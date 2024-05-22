@@ -1,0 +1,83 @@
+# Mosquitto Broker
+mqtt:
+  host: 192.168.1.222
+  topic_prefix: frigate
+  user: "mqtt-user"
+  password: "wacky445"
+
+# Global ffmpeg settings.
+ffmpeg:
+  hwaccel_args: preset-vaapi
+
+# Use the google coral edgeTPU.
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+# Use go2rtc for restreaming
+go2rtc:
+  streams:
+    front_garden:
+      - rtsp://root123:wacky445@192.168.1.15:554/stream1
+    back_garden:
+      - rtsp://root123:wacky445@192.168.1.153:554/stream1
+    driveway:
+      - rtsp://192.168.1.188:554/live/ch0
+
+#Global Object Settings
+objects:
+  track:
+    - person
+    - cat
+    - dog
+  filters:
+    person:
+      min_score: 0.6
+
+cameras:
+
+  # Driveway Camera
+  driveway:
+    ffmpeg:
+      inputs:
+        # High Resolution Stream
+        - path:  rtsp://192.168.1.52:8554/driveway
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            - detect
+    detect:
+      width: 1280
+      height: 720
+      fps: 12
+
+  # Front Garden Camera
+  front_garden:
+    ffmpeg:
+      inputs:
+        # High Resolution Stream
+        - path:  rtsp://192.168.1.52:8554/front_garden
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            - detect
+    detect:
+      width: 1280
+      height: 720
+      fps: 12
+
+  # Back Garden Camera
+  back_garden:
+    ffmpeg:
+      inputs:
+        # High Resolution Stream
+        - path:  rtsp://192.168.1.52:8554/back_garden
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            - detect
+    detect:
+      width: 1280
+      height: 720
+      fps: 12
