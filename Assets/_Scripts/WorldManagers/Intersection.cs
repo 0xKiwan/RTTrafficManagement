@@ -188,6 +188,5 @@ namespace TrafficSim.WorldManagers
             // Mark intersection as inactive.
             intersectionActive = false;
         }
-
     }
 }

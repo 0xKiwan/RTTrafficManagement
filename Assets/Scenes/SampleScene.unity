@@ -2312,6 +2312,8 @@ MonoBehaviour:
   - {fileID: 5520188617814868205, guid: 54041f37fcb50984083c7d3e07406626, type: 3}
   - {fileID: 3995528767320542969, guid: 5c14cfab3a1ecae4481c29d2b893875b, type: 3}
   - {fileID: 9018257326800820887, guid: c03f0d97d4fe7cd44a91b7dfe086e773, type: 3}
+  streetLampPrefab: {fileID: 201192431171672659, guid: 3b65b8e1b42833e45a2f76f590ddfc46,
+    type: 3}
   mapGenerator: {fileID: 1888314523}
 --- !u!1 &1400000696
 GameObject:

@@ -17,6 +17,12 @@ namespace TrafficSim.ProceduralEngine
         // A list of positions that are within roundabouts.
         private List<Vector3Int> roundaboutPositions;
 
+        // The number of straight roads we've found.
+        private int straightRoadCount;
+
+        // A reference to the GameManager object.
+        private GameManager gameManagerRef;
+
         // Constructor for the RoadFixer class.
         public RoadFixer(MapGrid grid)
         {
@@ -25,6 +31,9 @@ namespace TrafficSim.ProceduralEngine
 
             // Initialize the roundabout positions list.
             roundaboutPositions = new List<Vector3Int>();
+
+            // Get the GameManager object.
+            gameManagerRef = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
 
         // Used to fix road orientation.
@@ -152,6 +161,9 @@ namespace TrafficSim.ProceduralEngine
 
                     // Set the cell rotation.
                     cell.SetRotation(rotation);
+
+                    // Increment the straight road count.
+                    straightRoadCount++;
 
                     // Return that we successfully created a straight road.
                     return true;

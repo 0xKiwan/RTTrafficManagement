@@ -20,6 +20,9 @@ namespace TrafficSim
         // A list of all the roads in the game.
         public List<Road> roadObjects;
 
+        // The gameobject for street lamps.
+        public GameObject streetLampPrefab;
+
         // The map generator object.
         public MapGenerator mapGenerator;
 

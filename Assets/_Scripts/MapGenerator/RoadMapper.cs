@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TrafficSim.ProceduralEngine
@@ -26,6 +27,9 @@ namespace TrafficSim.ProceduralEngine
 
         // A list of roads we have found.
         public List<Road> roads = new List<Road>();
+
+        // The GameManager object.
+        private GameManager gameManagerRef;
 
         // Lists of common elements for street names
         private string[] roadTypes = {
@@ -76,6 +80,7 @@ namespace TrafficSim.ProceduralEngine
         {
             mapGridRef = grid;
             roadFixerRef = roadFixer;
+            gameManagerRef = GameObject.Find("GameManager").GetComponent<GameManager>();
 
             // Identify the roads in the map.
             IdentifyRoads(false);
@@ -90,6 +95,87 @@ namespace TrafficSim.ProceduralEngine
 
             // Place the road names on the map.
             PlaceRoadNames();
+
+            // Loop through all of the roads.
+            foreach (Road road in roads)
+            {
+                // Get the cells in the road.
+                List<MapGridCell> cells = road.GetCells();
+
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    // Get the cell.
+                    MapGridCell cell = cells[i];
+
+                    // Only do StraightRoad cells.
+                    if (cell.GetCellType() != MapGridCellType.RoadStraight) continue;
+
+                    // Get the position of the cell.
+                    Vector3 pos = cell.GetPosition() + new Vector3(0, 1, 0);
+
+                    // Rotation, will be altered based on cell orientation.
+                    Vector3 rot = new Vector3(0, 0, 0);
+
+                    // If the road is horizontal
+                    if (!road.isVertical)
+                    {
+                        // Switch sides of the cell every 2 cells.
+                        if (i % 2 == 0)
+                        {
+                            // Set position
+                            pos = new Vector3(pos.x, pos.y, pos.z + 0.56f);
+
+                            // Rotate y -90.
+                            rot.y = -90;
+                        }
+                        else
+                        {
+                            // Set position
+                            pos = new Vector3(pos.x, pos.y, pos.z - 0.56f);
+
+                            // Rotate y +90.
+                            rot.y = 90;
+                        }
+                    }
+                    // If the road is vertical
+                    else
+                    {
+                        // Switch sides of the cell every 2 cells.
+                        if (i % 2 == 0)
+                        {
+                            // Set position
+                            pos = new Vector3(pos.x + 0.56f, pos.y, pos.z);
+                        }
+                        else
+                        {
+                            // Set position
+                            pos = new Vector3(pos.x - 0.56f, pos.y, pos.z);
+
+                            // Rotate y 180
+                            rot.y = 180;
+                        }
+                    }
+
+                    // Spawn the lamp post with the computed position and rotation.
+                    GameObject post = SpawnLampPost(pos, Quaternion.identity);
+
+                    // Add a StreetLight script to the lamp post.
+                    post.AddComponent<TrafficSim.WorldManagers.StreetLight>();
+
+                    // Set scale to 0.8x
+                    post.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+
+                    // Apply the vector3 rotation to the post.
+                    post.transform.eulerAngles = rot;
+                }
+            }
+        }
+
+        // Used to spawn a street lamp at a given position.
+        private GameObject SpawnLampPost(Vector3 pos, Quaternion rot)
+        {
+            // Instantiate a new lamp post at the given position.
+            return GameObject.Instantiate(gameManagerRef.streetLampPrefab, pos, rot);
         }
 
         // Function to generate a road name

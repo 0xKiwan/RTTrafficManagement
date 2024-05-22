@@ -46,15 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedNodes:
   - {fileID: 3594670783171042489}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 0}
 --- !u!1 &3584324858868449365
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,15 +98,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedNodes:
   - {fileID: 6354179046888937796}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 0}
 --- !u!1 &4206689602519244298
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,15 +150,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedNodes:
   - {fileID: 6354179046888937796}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 0}
 --- !u!1 &7539789055410881565
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,15 +202,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedNodes:
   - {fileID: 3594670783171042489}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 0}
 --- !u!1 &8557508812895690443
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,15 +255,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 1480476399379718096}
   - {fileID: 3156956892079565655}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 0}
 --- !u!1 &8907539936946404070
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,15 +308,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 225431109465602623}
   - {fileID: 2312362685930208986}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 0}
 --- !u!1001 &6541731023562866266
 PrefabInstance:
   m_ObjectHideFlags: 0
