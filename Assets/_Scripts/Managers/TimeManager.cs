@@ -7,111 +7,110 @@ namespace TrafficSim.WorldManagers
 {
     public class TimeManager : MonoBehaviour
     {
+        // Time scale for controlling the speed of time.
         [SerializeField] private float timeScale;
+
+        // Initial hour of the day.
         [SerializeField] private float startHour;
+
+        // Reference to the directional light representing the sun.
         [SerializeField] private Light sunLight;
+
+        // Hour of sunrise and sunset.
         [SerializeField] private float sunriseHour;
         [SerializeField] private float sunsetHour;
-        private DateTime currentTime;
+
+        // Current time in the simulation.
+        public DateTime currentTime;
+
+        // Time of sunrise and sunset as TimeSpan.
         private TimeSpan sunriseTime;
         private TimeSpan sunsetTime;
 
+        // Duration of day and night.
+        private TimeSpan dayDuration;
+        private TimeSpan nightDuration;
 
-        // Start is called before the first frame update
-        void Start()
+        // Event triggered when time changes.
+        public event Action<bool> OnTimeChanged;
+
+        // Frequency of time updates (in seconds).
+        private float updateFrequency = 0.01f;
+        private float timeSinceLastUpdate = 0f;
+
+        private void Start()
         {
-            // Set the current time.
-            currentTime = DateTime.Now.Date + TimeSpan.FromHours(startHour);
-
-            // Set the sunrise and sunset times.
+            // Initialize current time and time-related variables.
+            currentTime = DateTime.Today.AddHours(startHour);
             sunriseTime = TimeSpan.FromHours(sunriseHour);
             sunsetTime = TimeSpan.FromHours(sunsetHour);
+            dayDuration = sunsetTime - sunriseTime;
+            nightDuration = sunriseTime - sunsetTime + TimeSpan.FromHours(24);
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            // Update the time of day.
-            UpdateTimeOfDay();
+            // Update the time since the last update.
+            timeSinceLastUpdate += Time.deltaTime;
 
-            // Apply rotation to the sun.
-            RotateSun();
+            // Check if it's time for an update.
+            if (timeSinceLastUpdate >= updateFrequency)
+            {
+                // Update the time of day.
+                UpdateTimeOfDay();
+
+                // Rotate the sun.
+                RotateSun();
+
+                // Reset the time since last update.
+                timeSinceLastUpdate = 0f;
+
+                // Notify listeners about time change.
+                OnTimeChanged?.Invoke(IsDaytime());
+            }
         }
 
-        // Used to update the time of day using deltaTime.
+        // Update the current time based on the time scale.
         private void UpdateTimeOfDay()
         {
-            // Add deltaTime to the current time.
-            currentTime = currentTime.AddSeconds(Time.deltaTime * timeScale);
+            currentTime = currentTime.AddSeconds(updateFrequency * timeScale);
         }
 
-        // Used to rotate the sun based on the time of day.
+        // Rotate the sun based on the current time.
         private void RotateSun()
         {
-            // Will store the rotation of the sun.
             float sunLightRotation;
+            TimeSpan timeSinceReference;
+            double percentage;
 
-            // If the current time is between sunrise and sunset.
-            if (currentTime.TimeOfDay > sunriseTime && currentTime.TimeOfDay < sunsetTime)
+            if (IsDaytime())
             {
-                // Calculate the percentage of the day that has passed.
-                TimeSpan sunriseToSunsetDuration = TimeDifference(sunriseTime, sunsetTime);
-                TimeSpan timeSinceSunrise = TimeDifference(sunriseTime, currentTime.TimeOfDay);
-
-                // Calculate the percentage of time passed since sunrise.
-                double percentage = timeSinceSunrise.TotalMinutes / sunriseToSunsetDuration.TotalMinutes;
-
-                // Calculate the rotation of the sun based on the percentage of time passed.
+                timeSinceReference = currentTime.TimeOfDay - sunriseTime;
+                percentage = timeSinceReference.TotalMinutes / dayDuration.TotalMinutes;
                 sunLightRotation = Mathf.Lerp(0, 180, (float)percentage);
             }
             else
             {
-                // Calculate the percentage of the night that has passed.
-                TimeSpan sunsetToSunriseDuration = TimeDifference(sunsetTime, sunriseTime);
-                TimeSpan timeSinceSunset = TimeDifference(sunsetTime, currentTime.TimeOfDay);
-
-                // Calculate the percentage of time passed since sunset.
-                double percentage = timeSinceSunset.TotalMinutes / sunsetToSunriseDuration.TotalMinutes;
-
-                // Calculate the rotation of the sun based on the percentage of time passed.
+                timeSinceReference = currentTime.TimeOfDay - sunsetTime;
+                if (timeSinceReference.TotalSeconds < 0) timeSinceReference += TimeSpan.FromHours(24);
+                percentage = timeSinceReference.TotalMinutes / nightDuration.TotalMinutes;
                 sunLightRotation = Mathf.Lerp(180, 360, (float)percentage);
             }
 
-            // Apply the rotation to the sun.
             sunLight.transform.rotation = Quaternion.AngleAxis(sunLightRotation, Vector3.right);
         }
 
-        // Used to calculate the time difference between two TimeSpans.
-        private TimeSpan TimeDifference(TimeSpan fromTime, TimeSpan toTime)
-        {
-            // Get the difference between the two times.
-            TimeSpan difference = toTime - fromTime;
-
-            // If the difference is negative, add 24 hours.
-            if (difference.TotalSeconds < 0) difference += TimeSpan.FromHours(24);
-
-            // Return the difference.
-            return difference;
-        }
-
-        // Used to check if we are in daytime.
+        // Check if it's currently daytime.
         public bool IsDaytime()
         {
-            // Return true if the current time is between sunrise and sunset.
-            return (currentTime.TimeOfDay > sunriseTime && currentTime.TimeOfDay < sunsetTime);
+            var currentTimeOfDay = currentTime.TimeOfDay;
+            return currentTimeOfDay >= sunriseTime && currentTimeOfDay < sunsetTime;
         }
 
-        /**
-         * Used to get the current time as a float in seconds.
-         */
+        // Get the current time in milliseconds.
         public float GetCurrentMilliseconds()
         {
-            // Get the current time as a float in ms
-            float currentTimeMilliseconds = (float)currentTime.TimeOfDay.TotalMilliseconds;
-
-            // Return the current time.
-            return currentTimeMilliseconds;
+            return (float)currentTime.TimeOfDay.TotalMilliseconds;
         }
     }
-
 }
