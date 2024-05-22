@@ -62,8 +62,11 @@ namespace TrafficSim.ProceduralEngine
             // Map the roads. TODO: convert this to a function instead of a class.
             new RoadMapper(mapGrid, roadFixer);
 
+            // Get the GameManager object.
+            GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
             // Spawn gpu instanced grass cells.
-            grassSpawner.GenerateGrassObjects();
+            grassSpawner.GenerateGrassObjects(gameManager);
 
         }
 
