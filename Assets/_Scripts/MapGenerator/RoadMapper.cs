@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using TrafficSim.WorldManagers;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -96,6 +97,9 @@ namespace TrafficSim.ProceduralEngine
             // Place the road names on the map.
             PlaceRoadNames();
 
+            // Get the StreetLightManager object.
+            StreetLightManager streetLightManager = GameObject.Find("StreetLightManager").GetComponent<StreetLightManager>();
+
             // Loop through all of the roads.
             foreach (Road road in roads)
             {
@@ -160,13 +164,19 @@ namespace TrafficSim.ProceduralEngine
                     GameObject post = SpawnLampPost(pos, Quaternion.identity);
 
                     // Add a StreetLight script to the lamp post.
-                    post.AddComponent<TrafficSim.WorldManagers.StreetLight>();
+                    post.AddComponent<StreetLight>();
 
                     // Set scale to 0.8x
                     post.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
                     // Apply the vector3 rotation to the post.
                     post.transform.eulerAngles = rot;
+
+                    // Store the StreetLight component.
+                    StreetLight streetLight = post.GetComponent<StreetLight>();
+                    streetLightManager.streetLights.Add(streetLight);
+
+
                 }
             }
         }
