@@ -33,14 +33,23 @@ namespace TrafficSim.WorldManagers
         // The last light group that was active.
         private List<TrafficLightGroup> lastGroup;
 
-        // Mark the light as staged.
-        private bool staged = false;
+        // If the intersection is active, pedestrians must request to cross. Similar to uk pedestrian crossings.
+        public bool intersectionActive = true;
+
+        // Whether or not a request to cross has been made.
+        public bool requestToCross = false;
 
         // How long to wait before changing the light.
         private float lightChangeTime = 10f;
 
         // How long to wait before changing from amber to any other light.
         private float amberTime = 2f;
+
+        // How long since RequestToCross was called.
+        private float requestTimer = 0f;
+
+        // How long since all lights were made red for crossing.
+        private float crossingTimer = 0f;
 
         // Start is called before the first frame update
         void Start()
@@ -67,11 +76,57 @@ namespace TrafficSim.WorldManagers
             foreach (var lightGroup in currentGroup) lightGroup.SetRed();
         }
 
+        // Public function for requesting to cross the intersection.
+        public void RequestToCross()
+        {
+            // If the intersection is active, set requestToCross to true.
+            if (intersectionActive) {
+
+                // Mark requestToCross as true.
+                requestToCross = true;
+
+                // Reset the requestTimer.
+                requestTimer = 0f;
+            }
+        }
+
         // Update is called once per frame
         void Update()
         {
             // Increment the timer.
             timer += Time.deltaTime;
+
+            // Increment requestTimer.
+            requestTimer += Time.deltaTime;
+
+            // Increment crossingTimer.
+            crossingTimer += Time.deltaTime;
+
+            // If requestToCross is true, and 5 seconds have passed since the request was made, stage to red and skip the rest of the update.
+            if (requestToCross && requestTimer >= 5f)
+            {
+                // Set all lights to red.
+                SetAllLightsRed();
+
+                // Reset requestToCross.
+                requestToCross = false;
+
+                // Reset crossingTimer.
+                crossingTimer = 0f;
+
+                // If the current light group index is greater than or equal to the allLights count, reset the index to 0.
+                if (currentLightGroupIndex >= allLights.Count) currentLightGroupIndex = 0;
+
+                // Skip the rest of the update.
+                return;
+            }
+
+            // Give pedestrians 5 seconds to cross the intersection.
+            if (crossingTimer < 5f)
+            {
+                // Skip & return.
+                return;
+            }
 
             // Check if currentGroup has changed.
             if (currentGroup != allLights[currentLightGroupIndex])
@@ -100,6 +155,9 @@ namespace TrafficSim.WorldManagers
                 foreach (var lightGroup in lastGroup) lightGroup.SetRed();
                 foreach (var lightGroup in currentGroup) lightGroup.SetGreen();
 
+                // Mark intersection as active, if ANY light is green.
+                intersectionActive = true;
+
                 // Reset the timer.
                 timer = 0f;
 
@@ -126,6 +184,9 @@ namespace TrafficSim.WorldManagers
                     light.SetRed();
                 }
             }
+
+            // Mark intersection as inactive.
+            intersectionActive = false;
         }
 
     }

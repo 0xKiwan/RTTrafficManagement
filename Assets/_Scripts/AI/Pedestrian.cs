@@ -163,7 +163,30 @@ namespace TrafficSim.AI
                     continue;
                 }
 
-                // Check if we are waiting at a red light.
+                // Check if we are entering an intersection.
+                if (nextNode.intersectionParent != null)
+                {
+                    // Log that we have an intersection.
+                    Debug.Log("Intersection detected!");
+
+                    // Check if the intersection is active. and the next node is a crosswalk.
+                    if (nextNode.intersectionParent.intersectionActive && nextNode.type == Pathfinding.RoadNode.NodeType.CROSSWALK)
+                    {
+                        // Check if a request to cross has been made.
+                        if (!nextNode.intersectionParent.requestToCross)
+                        {
+                            // Request to cross the intersection.
+                            nextNode.intersectionParent.RequestToCross();
+                        }
+
+                        // Yield, intersectionActive will become false when the light changes and this code block will be skipped.
+                        yield return new WaitForSeconds(0.1f);
+                        continue;
+                    }
+                }
+
+
+
                 if (nextNode.pedestrianShouldWait && Vector3.Distance(transform.position, path[pathIndex].position) < 0.1f)
                 {
                     // Wait for a frame.

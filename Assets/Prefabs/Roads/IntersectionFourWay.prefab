@@ -47,15 +47,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 6161039158065594193}
   - {fileID: 241323656176787097}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 1
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &605860987179191261
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,15 +100,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 5185298698525373860}
   - {fileID: 6161039158065594193}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 1
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &1053491629727970279
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,15 +273,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 2971055165917165732}
   - {fileID: 4929681586756824568}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &1800617092579692177
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,15 +422,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 888040077038389834}
   - {fileID: 6585299901998776226}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &6593004067089445164
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,15 +475,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 241323656176787097}
   - {fileID: 4229729971265584518}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 1
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &8070600340910647416
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,15 +528,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 4229729971265584518}
   - {fileID: 5185298698525373860}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 1
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &8196164729634318789
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,15 +752,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectedNodes:
   - {fileID: 4929681586756824568}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1 &9171253386610141739
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,15 +805,12 @@ MonoBehaviour:
   connectedNodes:
   - {fileID: 888040077038389834}
   - {fileID: 2971055165917165732}
-  gCost: 0
-  hCost: 0
-  fCost: 0
   pos: {x: 0, y: 0, z: 0}
-  parent: {fileID: 0}
   type: 0
   lazyConnected: 0
   cornerStart: 0
   pedestrianShouldWait: 0
+  intersectionParent: {fileID: 3739173139241450805}
 --- !u!1001 &1338708946446490080
 PrefabInstance:
   m_ObjectHideFlags: 0

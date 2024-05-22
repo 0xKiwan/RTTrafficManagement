@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TrafficSim.WorldManagers;
 using UnityEngine;
 
 namespace TrafficSim.Pathfinding
@@ -19,15 +20,12 @@ namespace TrafficSim.Pathfinding
         public List<RoadNode> connectedNodes;
 
         // A* pathfinding variables
-        public float gCost;     // Cost from start to current node
-        public float hCost;     // Cost from current node to end
-        public float fCost;     // Total cost of the node
         public Vector3 pos; // Position of the node
-        public RoadNode parent; // Parent node in the path
         public NodeType type;   // The type of node
         public bool lazyConnected; // Whether or not this node is connnected by distance alone
         public bool cornerStart;   // Whether or not this node is the start of a corner
         public bool pedestrianShouldWait = false; // Whether or not a pedestrian should wait at this node for the light to change
+        public Intersection intersectionParent;  // If the node belongs to an intersection, this will not be null.
 
         // Getter for position
         public Vector3 position
