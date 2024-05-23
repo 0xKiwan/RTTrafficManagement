@@ -1122,6 +1122,7 @@ Transform:
   - {fileID: 1352707241}
   - {fileID: 362663230}
   - {fileID: 729567995}
+  - {fileID: 1447506335}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
@@ -1426,7 +1427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &721022828
 Transform:
   m_ObjectHideFlags: 0
@@ -1689,7 +1690,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875878068}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 5.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1697,7 +1698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.15}
+  m_AnchoredPosition: {x: 0, y: -1007}
   m_SizeDelta: {x: 30, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &875878070
@@ -2285,6 +2286,7 @@ Transform:
   - {fileID: 1888314522}
   - {fileID: 721022828}
   - {fileID: 732479379}
+  - {fileID: 1433770059}
   m_Father: {fileID: 400363293}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1352707242
@@ -2300,7 +2302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainPrefabs:
-  - {fileID: 2354584105964108791, guid: 4821230bfe6ed2440b2216cdc006712c, type: 3}
+  - {fileID: 8927944795066732987, guid: 1da5fbb384f90ea498e197060483cc02, type: 3}
   - {fileID: 2498222489228024924, guid: 0732f4fa5a429e241a3051590f1d971f, type: 3}
   - {fileID: 6470550909651543470, guid: 82a92c7bbe87be845892a06983800ff1, type: 3}
   - {fileID: 3120710027485777295, guid: 06513feb2dd1f024bab5b842a4838f27, type: 3}
@@ -2309,9 +2311,9 @@ MonoBehaviour:
   - {fileID: 6199640728404017931, guid: 9dad9f3c11cc2184ba5674ccc2e190fe, type: 3}
   - {fileID: 4235770453827578819, guid: 64f6dd3a5e9fdb34bba3cdefae812f6d, type: 3}
   housePrefabs:
-  - {fileID: 5520188617814868205, guid: 54041f37fcb50984083c7d3e07406626, type: 3}
-  - {fileID: 3995528767320542969, guid: 5c14cfab3a1ecae4481c29d2b893875b, type: 3}
-  - {fileID: 9018257326800820887, guid: c03f0d97d4fe7cd44a91b7dfe086e773, type: 3}
+  - {fileID: 2554891084577198975, guid: 7761c26f579b29c4096b7ee9fc4a427a, type: 3}
+  - {fileID: 3231363346092656047, guid: ca44178eeb95e3244a28018d573b112c, type: 3}
+  - {fileID: 2114098124715768122, guid: 4c7f999659bc54f45bd08430133bb7e5, type: 3}
   streetLampPrefab: {fileID: 201192431171672659, guid: 3b65b8e1b42833e45a2f76f590ddfc46,
     type: 3}
   mapGenerator: {fileID: 1888314523}
@@ -2450,6 +2452,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1400000696}
   m_CullTransparentMesh: 1
+--- !u!1 &1433770058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1433770059}
+  m_Layer: 0
+  m_Name: BuildingInstanceMangers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1433770059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433770058}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1352707241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1447506334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1447506335}
+  - component: {fileID: 1447506336}
+  m_Layer: 0
+  m_Name: StreetLightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1447506335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447506334}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400363293}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1447506336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447506334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c047d577fb29c594ba5611e3c728086f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  streetLights: []
+  timeManager: {fileID: 729567996}
 --- !u!1 &1457294989
 GameObject:
   m_ObjectHideFlags: 0

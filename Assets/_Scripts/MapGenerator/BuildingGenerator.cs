@@ -40,7 +40,8 @@ namespace TrafficSim.ProceduralEngine
             // Get the GameManager object to access the house prefabs.
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-            // Debug.Log(gameManager.housePrefabs[0].ToString());
+            // Get the "BuildingInstanceManager" object to access the building instances.
+            GameObject buildingInstanceManager = GameObject.Find("BuildingMeshInstancer");
 
             // Loop through all road cells.
             foreach (MapGridCell cell in roadCells)
@@ -60,11 +61,42 @@ namespace TrafficSim.ProceduralEngine
                     // Get a random house prefab.
                     GameObject housePrefab = gameManager.housePrefabs[housePrefabIndex];
 
-                    // Construct the building on this grassCell.
-                    StructureModel building = grassCell.ConstructBuilding(housePrefab);
+                    // Check if an object with the prefab name exists in the buildingInstanceManager.
+                    if (buildingInstanceManager.transform.Find(housePrefab.name) == null)
+                    {
+                        // Create a new PrefabInstancer object with the housePrefab name.
+                        GameObject prefabInstancer = new GameObject(housePrefab.name);
 
-                    // Set rotation of the building.
-                    SetBuildingRotation(grassCell, cell);
+                        // Set the parent of the prefabInstancer to the buildingInstanceManager.
+                        prefabInstancer.transform.parent = buildingInstanceManager.transform;
+
+                        // Add the prefabInstancer to the new GameObject.
+                        prefabInstancer.AddComponent<PrefabInstancer>();
+
+                        // Get the PrefabInstancer component.
+                        PrefabInstancer prefabInstancerComponent = prefabInstancer.GetComponent<PrefabInstancer>();
+
+                        // Setup the prefab inside of the prefabInstancer.
+                        prefabInstancerComponent.SetupPrefab(housePrefab);
+                    }
+                    else
+                    {
+                        // Get the object with the same name as the housePrefab.
+                        PrefabInstancer prefabInstancer = buildingInstanceManager.transform.Find(housePrefab.name).gameObject.GetComponent<PrefabInstancer>(); ;
+
+                        // Get position of the house.
+                        Vector3 position = grassCell.GetPosition() + new Vector3(0, 1.0f, 0);
+
+                        // Get the rotation of the building.
+                        Quaternion rotation = GetBuildingRotation(grassCell, cell);
+
+                        // Scale 1.0f
+                        Vector3 scale = new Vector3(1.0f, 1.0f, 1.0f);
+
+                        // Add an instance of the prefab to the prefabInstancer.
+                        prefabInstancer.AddInstance(position, rotation, scale);
+
+                    }
                 }
             }
         }
@@ -72,7 +104,7 @@ namespace TrafficSim.ProceduralEngine
         /**
          * Used to set a building's rotation based on grass & road cell positions.
          */
-        private void SetBuildingRotation(MapGridCell grassCell, MapGridCell roadCell)
+        private Quaternion GetBuildingRotation(MapGridCell grassCell, MapGridCell roadCell)
         {
             // Get relative position of the grass cell to the road cell.
             Vector3Int relativePos = grassCell.GetPosition() - roadCell.GetPosition();
@@ -86,8 +118,7 @@ namespace TrafficSim.ProceduralEngine
                         relativePos.z < 0 ? Quaternion.Euler(0, 180, 0) :
                         rotation;
 
-            // Update the rotation of the building.
-            grassCell.GetBuilding().SetRotation(rotation);
+            return rotation;
         }
     }
 }

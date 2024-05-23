@@ -16,7 +16,7 @@ namespace TrafficSim.ProceduralEngine
         [SerializeField] private int mapHeight;                 // The height of the map. Set in the inspector.
         [SerializeField] private int zoneSize;                  // The size of the zone. Set in the inspector.
         public MapGrid mapGrid;                                 // The map grid. Stores actual information about the map.
-        [SerializeField] private GrassSpawner grassSpawner;     // The grass spawner object, for gpu instanced grass blocks.
+        [SerializeField] private GameManager gameManager;    // Reference to the GameManager object.
 
         /**
          * Called by the GameManager when the game starts.
@@ -25,6 +25,9 @@ namespace TrafficSim.ProceduralEngine
         {
             // Initialize the mapGrid object.
             mapGrid.Initialize(mapWidth, mapHeight);
+
+            // Get the GameManager object.
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
 
         /**
@@ -32,6 +35,7 @@ namespace TrafficSim.ProceduralEngine
          */
         public void GenerateMap()
         {
+
             // Generate the first pass of the map.
             GenerateTerrain();
 
@@ -47,26 +51,23 @@ namespace TrafficSim.ProceduralEngine
             // Map adjacent grass cells to roads.
             roadFixer.MapAdjacentGrassCells();
 
+            // Initialize all cells.
+            mapGrid.InitializeAllCells();
+
             // Construct a BuildingGenerator object.
             BuildingGenerator buildingGenerator = new BuildingGenerator(mapGrid, roadFixer.GetRoundaboutCells());
 
             // Generate buildings.
             buildingGenerator.GenerateBuildings();
 
-            // Now that we have the map generated, we can initialize the GameObjects in the world.
-            mapGrid.InitializeAllCells();
+            // Setup grass terrain.
+            SetupGrassSpawner();
 
             // Final pass to assign neighbors, since orientations have changed & buildings have been added.
             AssignNeighbors();
 
             // Map the roads. TODO: convert this to a function instead of a class.
             new RoadMapper(mapGrid, roadFixer);
-
-            // Get the GameManager object.
-            GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-            // Spawn gpu instanced grass cells.
-            grassSpawner.GenerateGrassObjects(gameManager);
 
         }
 
@@ -90,21 +91,60 @@ namespace TrafficSim.ProceduralEngine
         }
 
         /**
-         * Used to set all buildings to static.
+         * Used to setup gpu instanced grass blocks.
          */
-        public void SetAllBuildingsToStatic()
+        public void SetupGrassSpawner()
         {
-            // Get every single MapGridCell in the world.
-            foreach (MapGridCell cell in mapGrid.cells.Values)
+            // Get the "BuildingInstanceManager" object to access the building instances.
+            GameObject buildingInstanceManager = GameObject.Find("BuildingMeshInstancer");
+
+            // Create a Grass object.
+            GameObject grass = new GameObject("Grass");
+
+            // Set the parent to the buildingInstanceManager.
+            grass.transform.SetParent(buildingInstanceManager.transform);
+
+            // Add a PrefabInstancer component to the GameObject.
+            grass.AddComponent<PrefabInstancer>();
+
+            // Get the PrefabInstancer component.
+            PrefabInstancer prefabInstancer = grass.GetComponent<PrefabInstancer>();
+
+            // Setup the grass prefab.
+            prefabInstancer.SetupPrefab(gameManager.terrainPrefabs[gameManager.terrainPrefabDictionary[MapGridCellType.Grass]]);
+
+            // Get all grass cells.
+            List<MapGridCell> grassCells = mapGrid.GetAllCellsByType(MapGridCellType.Grass);
+
+            // Loop through all grass cells and add to the prefabInstancer.
+            foreach (MapGridCell cell in grassCells)
             {
-                // Get the building from the cell.
-                StructureModel building = cell.GetBuilding();
+                // Get the cellpos as vector3 int.
+                Vector3 cellPos = cell.GetPosition();
 
-                // Check the building is not null.
-                if (building == null) continue;
+                // Rotation 0
+                Quaternion rot = Quaternion.Euler(0, 0, 0);
 
-                // Set the building to static.
-                building.structure.isStatic = true;
+                // Scale 1
+                Vector3 scale = new Vector3(1, 1, 1);
+
+                // Add the matrix to the current batch.
+                prefabInstancer.AddInstance(cellPos, rot, scale);
+            }
+
+            // Get all children of BuildingMeshInstancer.
+            Transform[] children = buildingInstanceManager.GetComponentsInChildren<Transform>();
+
+            // Loop through children & get the PrefabInstancer component.
+            foreach (Transform child in children)
+            {
+                PrefabInstancer pi = child.GetComponent<PrefabInstancer>();
+
+                // If the PrefabInstancer is not null, render the instances.
+                if (pi != null)
+                {
+                    pi.FinalizeMatrices();
+                }
             }
         }
 

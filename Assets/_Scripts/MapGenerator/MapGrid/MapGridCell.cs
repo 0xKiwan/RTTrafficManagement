@@ -16,7 +16,6 @@ namespace TrafficSim.ProceduralEngine
         private Quaternion rotation;                                        // The rotation of the cell.
         private MapGridCellType cellType;                                   // The type of the cell.
         private StructureModel structureModel;                              // The structure belonging to the cell.
-        private StructureModel building;                                    // The building attached to the cell.
         public List<MapGridCell> adjGrassCells;                             // The adjacent grass cells.
         private bool hasBuilding    = false;                                // Whether or not the cell has a building.
         public MapGridCell topNeighbor     = null;                          // The top neighbor of the cell.
@@ -91,59 +90,6 @@ namespace TrafficSim.ProceduralEngine
 
             // Return the roadHandler.
             return roadHandler;
-        }
-
-        /**
-         * Used to get the building of the cell.
-         */
-        public StructureModel GetBuilding() { return building; }
-
-        /**
-         * Used to set the building of the cell.
-         */
-        public void SetBuilding(StructureModel building) { this.building = building; }
-
-        /**
-         * Used to construct a building on this cell given a prefab.
-         */
-        public StructureModel ConstructBuilding(GameObject prefab)
-        {
-            // If we already have a building, we are trying to place on a corner. Destroy the old building.
-            if (hasBuilding) 
-            { 
-                // Destroy the building.
-                building.DestroyStructure();
-
-                // Return, we don't want buildings on corners.
-                return null;
-            }
-
-            // Get the GameManager.
-            GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-            // Create a GameObject with the name "MapGridCell" + the prefab name.
-            GameObject structure = new GameObject("Building");
-
-            // Set the parent to the mapGrid.
-            structure.transform.SetParent(gameManager.mapGenerator.mapGrid.transform);
-
-            // Set the position of the structure + y1
-            structure.transform.position = position + new Vector3(0, 1, 0);
-
-            // Add a StructureModel component to the GameObject.
-            this.building = structure.AddComponent<StructureModel>();
-
-            // Create the model of the structure.
-            this.building.CreateModel(prefab);
-
-            // Rotate the structure.
-            this.building.SetRotation(rotation); 
-
-            // Set hasBuilding to true.
-            hasBuilding = true;
-
-            // Return the structuremodel for the building.
-            return this.building;
         }
 
         /**
